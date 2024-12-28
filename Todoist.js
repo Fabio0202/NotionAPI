@@ -4,6 +4,22 @@ require('dotenv').config();
 
 const api = new TodoistApi(process.env.TODOIST_KEY);
 
+const projects = [
+    {
+        name: "Inbox",
+        id: '2169795369'
+    },
+    {
+        name: "Current Tasks",
+        color: '2343459897'
+    }
+]
+
+async function createInboxTask({content}) {
+const task = await   api.addTask({ content, projectId: projects[0].id} )
+return task;
+}
+
 async function getProjects() {
     try {
         const projects = await api.getProjects();
@@ -14,4 +30,4 @@ async function getProjects() {
     }
 }
 
-module.exports = { getProjects };
+module.exports = { createInboxTask, getProjects };

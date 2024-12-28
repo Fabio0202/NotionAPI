@@ -1,6 +1,6 @@
 const {getPokemon} = require('./PokemonAPI');
-const {getProjects} = require('./Todoist.js');
+const todoist = require('./Todoist.js');
 
 require('dotenv').config();
 // getPokemon();
-getProjects();
+todoist.createInboxTask({content: "Hallo ich bin ein test"});
