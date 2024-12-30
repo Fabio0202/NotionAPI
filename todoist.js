@@ -55,23 +55,10 @@ function getxSecondsAgo(x) {
 }
 
 
-async function getAllNewTasksEveryxSeconds(x) {
-    const functionToRun = async () => {
-        
-        const allTasks = await getInboxTasks();
-        const filteredTasks = filterOnlyNewTasks(allTasks, x);
-        filteredTasks.map(task => console.log(task.content));
-    }
-
-    runEveryxSeconds(functionToRun, x);
-}
-
-
-
 
 module.exports = { createInboxTask, getProjects,
 
-    runEveryxSeconds, getInboxTasks,  getAllNewTasksEveryxSeconds, 
+    runEveryxSeconds, getInboxTasks, filterOnlyNewTasks
  };
 
 //wenn Task returned, dann rufe Notion create Page auf
