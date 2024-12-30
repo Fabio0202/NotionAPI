@@ -31,9 +31,9 @@ async function getProjects() {
 }
 
 // eine funktion die eine andere funktion jede minute abruft
-async function runEveryMinute(fn) {
+async function runEveryxSeconds(fn, x) {
     await fn();
-    setTimeout(() => runEveryMinute(fn), 60000);
+    setTimeout(() => runEveryxSeconds(fn, x), (x * 1000));
 }
 
 // eine funktion die alle tasks aus dem inbox project holt
@@ -42,33 +42,36 @@ async function getInboxTasks() {
     return tasks
 }
 
-function filterOnlyNewTasks(tasks) {
-    const OneMinuteAgo = getOneMinuteAgo();
-    return tasks.filter(task => new Date(task.createdAt) > OneMinuteAgo);
+function filterOnlyNewTasks(tasks, x) {
+    const xSecondsAgo = getxSecondsAgo(x);
+    return tasks.filter(task => new Date(task.createdAt) > xSecondsAgo);
 }
 
 // eine funktion die das jetzige datum minus eine minute ausgibt
-function getOneMinuteAgo() {
+function getxSecondsAgo(x) {
     const now = new Date();
-    now.setMinutes(now.getMinutes() - 1);
+    now.setSeconds(now.getSeconds() - x);
     return now;
 }
 
 
-async function getAllNewTasksEveryMinute() {
+async function getAllNewTasksEveryxSeconds(x) {
     const functionToRun = async () => {
         
         const allTasks = await getInboxTasks();
-        const filteredTasks = filterOnlyNewTasks(allTasks);
+        const filteredTasks = filterOnlyNewTasks(allTasks, x);
         filteredTasks.map(task => console.log(task.content));
     }
 
-    runEveryMinute(functionToRun);
+    runEveryxSeconds(functionToRun, x);
 }
+
+
+
 
 module.exports = { createInboxTask, getProjects,
 
-    runEveryMinute, getInboxTasks,  getAllNewTasksEveryMinute, getOneMinuteAgo
+    runEveryxSeconds, getInboxTasks,  getAllNewTasksEveryxSeconds, 
  };
 
- //wenn Task returned, dann rufe Notion create Page auf
+//wenn Task returned, dann rufe Notion create Page auf
