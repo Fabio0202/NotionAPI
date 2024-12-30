@@ -1,4 +1,3 @@
-const {getPokemon} = require('./PokemonAPI');
 const todoist = require('./todoist.js');
 const notion = require('./NotionAPI.js');
 
