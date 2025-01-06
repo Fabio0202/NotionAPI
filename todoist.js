@@ -47,6 +47,14 @@ function filterOnlyNewTasks(tasks, x) {
     return tasks.filter(task => new Date(task.createdAt) > xSecondsAgo);
 }
 
+// eine Funktion, die alle Tasks filtert nach Tasks die geändert wurden
+function filterOnlyChangedTasks(tasks, x) {
+    const xSecondsAgo = getxSecondsAgo(x);
+     return tasks.filter(task => 
+        new Date(task.updatedAt) > xSecondsAgo
+    );
+}
+
 // eine funktion die das jetzige datum minus eine minute ausgibt
 function getxSecondsAgo(x) {
     const now = new Date();
@@ -58,7 +66,7 @@ function getxSecondsAgo(x) {
 
 module.exports = { createInboxTask, getProjects,
 
-    runEveryxSeconds, getInboxTasks, filterOnlyNewTasks
+    runEveryxSeconds, getInboxTasks, filterOnlyNewTasks, filterOnlyChangedTasks
  };
 
 //wenn Task returned, dann rufe Notion create Page auf
