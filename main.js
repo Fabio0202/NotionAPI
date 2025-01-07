@@ -20,14 +20,20 @@ async function TodoistToNotionEveryxSeconds(x) {
         //erstellt neue Notionpage für neue Tasks aus Todoist
         const newTasks = todoist.filterOnlyNewTasks(allTasks, x);
         newTasks.map(task => notion.createNotionPage(task));
-        console.log("all new Tasks:", newTasks);
+        //console.log("all new Tasks:", newTasks);
 
         //update Tasks über Todoist
         const updatedTasks = todoist.filterOnlyChangedTasks(oldTasks, allTasks);
-        
-        console.log("All updated Tasks:", updatedTasks);
+        //console.log("All updated Tasks:", updatedTasks);
+
+        //find id's of Tasks that were there before but aren't there anymore
+        const removedTaskIds = oldTasks
+            .filter(oldTask => !allTasks.some(newTask => newTask.id === oldTask.id))
+            .map(task => task.id);
+        //console.log("All removed Task Ids:", removedTaskIds);
+
         oldTasks = allTasks;
-    }
+        }
 
     todoist.runEveryxSeconds(functionToRun, x);
 }
