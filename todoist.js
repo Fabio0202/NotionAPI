@@ -66,6 +66,7 @@ function hasTaskChanged(oldTask, newTask) {
     if (newTask.priority !== oldTask.priority) return true;
     if (hasDateChanged(oldTask, newTask)) return true;
     if(newTask.content !== oldTask.content) return true;
+
     return false;
 }
 
@@ -76,6 +77,18 @@ function hasDateChanged(oldTask, newTask) {
     if ((newTask.due === null) !== (oldTask.due === null)) return true;
     //checkt ob das Datum geändert wurde
     if (newTask.due.date !== oldTask.due.date || newTask.due.isRecurring !== oldTask.due.isRecurring) return true;
+    //checkt ob Labels geändert wurden
+    if (haveLabelsChanged(oldTask.labels, newTask.labels)) return true;
+    return false;
+}
+
+function haveLabelsChanged(oldLabels, newLabels) {
+    if (oldLabels.length !== newLabels.length) return true;
+    const oldLabelsSet = new Set(oldLabels);
+    const newLabelsSet = new Set(newLabels);
+    for (let label of oldLabelsSet) {
+        if (!newLabelsSet.has(label)) return true;
+    }
     return false;
 }
 

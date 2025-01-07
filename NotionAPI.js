@@ -18,8 +18,18 @@ async function createNotionPage(task) {
         },
         "Priority": {
             "select": {
-                "name": task.priority.toString() // Umwandlung in eine Zeichenkette
+                "name": task.priority.toString()
             }
+        },
+        "Task-ID": {
+            "rich_text": [
+                {
+                    "type": "text",
+                    "text": {
+                        "content": task.id.toString()
+                    }
+                }
+            ]
         }
     };
 
@@ -27,6 +37,11 @@ async function createNotionPage(task) {
         properties["Due Date"] = {
             "type": "date",
             "date": { "start": task.due.date }
+        };
+    }
+    if (task.labels && task.labels.length > 0) {
+        properties["Areas of Focus"] = {
+            "multi_select": task.labels.map(label => ({ "name": label }))
         };
     }
 
