@@ -8,10 +8,13 @@ require('dotenv').config();
 
 TodoistToNotionEveryxSeconds(20);
 
+let oldTasks = [];
+
 async function TodoistToNotionEveryxSeconds(x) {
     const functionToRun = async () => {
         
         const allTasks = await todoist.getInboxTasks();
+
         console.log("Alle Tasks vor Filterung:", allTasks);
 
         //erstellt neue Notionpage für neue Tasks aus Todoist
@@ -20,8 +23,10 @@ async function TodoistToNotionEveryxSeconds(x) {
         console.log("all new Tasks:", newTasks);
 
         //update Tasks über Todoist
-        const updatedTasks = todoist.filterOnlyChangedTasks(allTasks, x);
+        const updatedTasks = todoist.filterOnlyChangedTasks(oldTasks, allTasks);
+        
         console.log("All updated Tasks:", updatedTasks);
+        oldTasks = allTasks;
     }
 
     todoist.runEveryxSeconds(functionToRun, x);

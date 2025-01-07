@@ -48,11 +48,35 @@ function filterOnlyNewTasks(tasks, x) {
 }
 
 // eine Funktion, die alle Tasks filtert nach Tasks die geändert wurden
-function filterOnlyChangedTasks(tasks, x) {
-    const xSecondsAgo = getxSecondsAgo(x);
-     return tasks.filter(task => 
-        new Date(task.updatedAt) > xSecondsAgo
+function filterOnlyChangedTasks(oldTasks, newTasks) {
+        const changedTasks = [];
+        oldTasks.map((oldTask) => {
+            const newTask = newTasks.find((task) => task.id == oldTask.id) 
+            if (newTask) {
+                if (hasTaskChanged(oldTask, newTask)) {
+                    changedTasks.push(newTask);
+                }
+            }
+        }
     );
+    return changedTasks;
+}
+
+function hasTaskChanged(oldTask, newTask) {
+    if (newTask.priority !== oldTask.priority) return true;
+    if (hasDateChanged(oldTask, newTask)) return true;
+    if(newTask.content !== oldTask.content) return true;
+    return false;
+}
+
+function hasDateChanged(oldTask, newTask) {
+    //checkt ob beide null sind
+    if(!newTask.due && !oldTask.due) return false;
+    //checkt ob Datum hinzugefügt oder gelöscht wurde (also wenn nur eins von beiden null ist)
+    if ((newTask.due === null) !== (oldTask.due === null)) return true;
+    //checkt ob das Datum geändert wurde
+    if (newTask.due.date !== oldTask.due.date || newTask.due.isRecurring !== oldTask.due.isRecurring) return true;
+    return false;
 }
 
 // eine funktion die das jetzige datum minus eine minute ausgibt
