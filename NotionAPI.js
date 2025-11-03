@@ -44,7 +44,7 @@ async function createNotionPage(task) {
             "multi_select": task.labels.map(label => ({ "name": label }))
         };
     }
-
+    console.log(process.env.NOTION_INBOX_ID);
     const response = await notion.pages.create({
         "parent": {
             "type": "database_id",
@@ -56,4 +56,4 @@ async function createNotionPage(task) {
 
 
 
-module.exports = {createNotionPage}
+module.exports = {createNotionPage, listDatabases};

@@ -12,6 +12,8 @@ let oldTasks = [];
 
 async function TodoistToNotionEveryxSeconds(x) {
     const functionToRun = async () => {
+       
+        
         
         const allTasks = await todoist.getInboxTasks();
 
